@@ -4,15 +4,11 @@ import os
 
 
 class Data:
-
     def __init__(self):
         self.train_files=os.listdir("./data/train")
-
         self.test_files=os.listdir("./data/test")
-
         self.train_idx=0
         self.test_idx=0
-
         self.labels="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     def next_batch(self,batch_size=100,type="train"):
@@ -56,7 +52,7 @@ class Data:
 
         return np.array(X),np.array(y)
 
-data=Data()
-X,y=data.next_batch(2,"train")
-
-print(X.shape,y.shape)
+# data=Data()
+# X,y=data.next_batch(2,"train")
+#
+# print(X.shape,y.shape)
