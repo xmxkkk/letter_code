@@ -19,16 +19,19 @@ class Data:
         if type=="train":
             idx=self.train_idx
             files=self.train_files
-            rotate=random.randint(-30,30)
-            print("rotate:"+str(rotate))
+            # rotate=random.randint(-30,30)
+            # print("rotate:"+str(rotate))
         else:
             idx=self.test_idx
             files=self.test_files
 
 
-
         if idx*batch_size+batch_size>len(files):
             idx=0
+            if type=="train":
+                self.train_idx=0
+            else:
+                self.test_idx=0
 
         datas=files[idx*batch_size:idx*batch_size+batch_size]
         X=[]

@@ -240,18 +240,16 @@ def build11(_name):
 # model=build1("x1")
 # model=build2("x2")
 # model=build3("x3") #收敛快
-# model=build4("x4")
+model=build4("x4")
 # model=build5("x5")
 # model=build6("x6")
 # model=build7("x7")
 # model=build8("x8")
 # model=build9("x9")
 # model=build10("x10")
-model=build11("x11")
+# model=build11("x11")
 
 print(model.summary())
-
-
 
 weight_path="./result/"+model.name+"/weights.w"
 if not os.path.exists("./result/"+model.name):
