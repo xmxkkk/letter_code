@@ -3,9 +3,7 @@ from input_data import Data
 import matplotlib.pyplot as plt
 import os
 
-
 data=Data("./data/")
-
 
 X=tf.placeholder(tf.float32,[None,40,40,3])
 y=tf.placeholder(tf.float32,[None,62])
@@ -27,13 +25,11 @@ dropout2=tf.nn.dropout(reshape1,keep_prob=keep_prob)
 
 dense1=tf.layers.dense(dropout2,units=62)
 
-logits=tf.nn.softmax(dense1)
+# resu=tf.nn.softmax(dense1)
 
-loss=tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=dense1,labels=y))
+loss = tf.losses.softmax_cross_entropy(onehot_labels=y,logits=dense1)
 step = tf.train.GradientDescentOptimizer(0.1).minimize(loss)
-
-correct_prediction=tf.equal(tf.argmax(logits,1),tf.argmax(y,1))
-accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+accuracy = tf.contrib.metrics.accuracy(labels=tf.argmax(y,axis=1),predictions=tf.argmax(dense1,axis=1))
 
 
 plt.ion()
@@ -43,6 +39,8 @@ x_draw=[]
 y_draw=[]
 
 weight_path="./result/tf/weights.w"
+weight_path_index="./result/tf/weights.w.index"
+
 
 saver = tf.train.Saver()
 
@@ -50,7 +48,7 @@ with tf.Session() as sess:
 
     sess.run([tf.global_variables_initializer(),tf.initialize_local_variables()])
 
-    if  os.path.exists(weight_path):
+    if os.path.exists(weight_path_index):
         saver.restore(sess, weight_path)
 
 
@@ -63,10 +61,12 @@ with tf.Session() as sess:
         X_train, y_train = data.next_batch(train_batch_size, 'train')
         _,loss_val,accuracy_val=sess.run([step,loss,accuracy],feed_dict={X:X_train,y:y_train,keep_prob:0.7})
         print("train\tloss_val=>" + str(loss_val) + "\t\taccuracy_val=>" + str(accuracy_val))
+
         if i%50==49:
             X_test, y_test = data.next_batch(test_batch_size, 'test')
             loss_val,accuracy_val=sess.run([loss,accuracy],feed_dict={X:X_test,y:y_test,keep_prob:1})
             print("test\tloss_val=>"+str(loss_val)+"\t\taccuracy_val=>"+str(accuracy_val))
+
 
             x_draw.append(x_axis)
             y_draw.append(accuracy_val)

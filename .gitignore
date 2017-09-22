@@ -1,3 +1,7 @@
 data/*
 vgg16.npy
 .idea/*
+__pycache__/
+input_data.pyc
+result/.DS_Store
+result/tf/
